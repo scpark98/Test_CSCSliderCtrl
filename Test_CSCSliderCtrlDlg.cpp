@@ -60,6 +60,7 @@ void CTestCSCSliderCtrlDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_SLIDER, m_slider);
+	DDX_Control(pDX, IDC_PROGRESS, m_progress);
 }
 
 BEGIN_MESSAGE_MAP(CTestCSCSliderCtrlDlg, CDialogEx)
@@ -103,6 +104,12 @@ BOOL CTestCSCSliderCtrlDlg::OnInitDialog()
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 	m_slider.SetRange(0, 200);
 	m_slider.SetPos(50);
+
+	//m_progress.set_style()
+	m_progress.use_slider();
+	m_progress.SetPos(50);
+	m_progress.set_back_color(RGB(255, 0, 0));
+	m_progress.set_back_track_color(RGB(0, 0, 255));
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }

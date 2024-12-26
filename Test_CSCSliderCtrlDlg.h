@@ -5,7 +5,7 @@
 #pragma once
 
 #include "../../Common/CSliderCtrl/SCSliderCtrl/SCSliderCtrl.h"
-
+#include "../../Common/CProgressCtrl/MacProgressCtrl/MacProgressCtrl.h"
 
 // CTestCSCSliderCtrlDlg 대화 상자
 class CTestCSCSliderCtrlDlg : public CDialogEx
@@ -35,4 +35,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CSCSliderCtrl m_slider;
+	CMacProgressCtrl m_progress;
 };
