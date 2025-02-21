@@ -102,11 +102,18 @@ BOOL CTestCSCSliderCtrlDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	m_slider.SetRange(0, 200);
-	m_slider.SetPos(50);
+	m_slider.SetRange(0, 1000);
+	m_slider.SetPos(500);
+	m_slider.set_style(CSCSliderCtrl::style_progress);
+	m_slider.set_text_style(CSCSliderCtrl::text_style_none);
+	m_slider.set_inactive_color(RGB(255, 0, 0));
+	//m_slider.set_track_height(5);
+	m_slider.enable_slide();
 
 	//m_progress.set_style()
+
 	m_progress.use_slider();
+	m_progress.SetRange(0, 1000);
 	m_progress.SetPos(50);
 	m_progress.set_back_color(RGB(255, 0, 0));
 	m_progress.set_back_track_color(RGB(0, 0, 255));
