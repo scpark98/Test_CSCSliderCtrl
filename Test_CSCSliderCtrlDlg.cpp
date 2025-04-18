@@ -8,6 +8,8 @@
 #include "Test_CSCSliderCtrlDlg.h"
 #include "afxdialogex.h"
 
+#include "../../Common/Functions.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -67,6 +69,7 @@ BEGIN_MESSAGE_MAP(CTestCSCSliderCtrlDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_WM_WINDOWPOSCHANGED()
 END_MESSAGE_MAP()
 
 
@@ -102,13 +105,29 @@ BOOL CTestCSCSliderCtrlDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	m_slider.SetRange(0, 1000);
-	m_slider.SetPos(500);
-	m_slider.set_style(CSCSliderCtrl::style_progress);
+	m_resize.Create(this);
+	m_resize.Add(IDC_PROGRESS, 0, 0, 100, 0);
+	m_resize.Add(IDC_SLIDER, 0, 0, 100, 100);
+	m_resize.Add(IDOK, 100, 100, 0, 0);
+	m_resize.Add(IDCANCEL, 100, 100, 0, 0);
+
+	DWORD is_auto_setup = 0;
+	get_registry_int(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\LinkMeMineSE\\LMMAgent"), _T("is auto setup"), &is_auto_setup);
+
+
+	m_slider.set_range(50, 100);
+	m_slider.set_style(CSCSliderCtrl::style_thumb_round);
+	m_slider.set_tic_freq(5, true);
+	//m_slider.set_track_height(3);
 	m_slider.set_text_style(CSCSliderCtrl::text_style_none);
-	m_slider.set_inactive_color(RGB(255, 0, 0));
+	m_slider.set_font_size(6);
+	m_slider.set_color_theme(CSCColorTheme::color_theme_linkmemine);
+	//m_slider.set_thumb_color(RGB(209, 209, 209));
+	//m_slider.set_text_color(GRAY(128));
+	//m_slider.set_back_color(RGB(64, 73, 88));
+	//m_slider.set_track_color(RGB(103, 117, 139), RGB(41, 47, 55));
 	//m_slider.set_track_height(5);
-	m_slider.enable_slide();
+	m_slider.set_use_slide();
 
 	//m_progress.set_style()
 
@@ -117,6 +136,8 @@ BOOL CTestCSCSliderCtrlDlg::OnInitDialog()
 	m_progress.SetPos(50);
 	m_progress.set_back_color(RGB(255, 0, 0));
 	m_progress.set_back_track_color(RGB(0, 0, 255));
+
+	RestoreWindowPosition(&theApp, this);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -170,3 +191,11 @@ HCURSOR CTestCSCSliderCtrlDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+void CTestCSCSliderCtrlDlg::OnWindowPosChanged(WINDOWPOS* lpwndpos)
+{
+	CDialogEx::OnWindowPosChanged(lpwndpos);
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	SaveWindowPosition(&theApp, this);
+}
