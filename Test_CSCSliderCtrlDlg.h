@@ -16,7 +16,7 @@ public:
 	CTestCSCSliderCtrlDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
 
 	CResizeCtrl		m_resize;
-
+	LRESULT			on_message_CSCSliderCtrl(WPARAM wParam, LPARAM lParam);
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
@@ -41,4 +41,10 @@ public:
 	CSCSliderCtrl m_slider;
 	CMacProgressCtrl m_progress;
 	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
+	CButton m_check_hide_thumb;
+	afx_msg void OnBnClickedCheckHideThumb();
+	CButton m_check_disable;
+	afx_msg void OnBnClickedCheckDisable();
+	CButton m_check_forced_gray;
+	afx_msg void OnBnClickedCheckForcedGray();
 };

@@ -63,6 +63,9 @@ void CTestCSCSliderCtrlDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_SLIDER, m_slider);
 	DDX_Control(pDX, IDC_PROGRESS, m_progress);
+	DDX_Control(pDX, IDC_CHECK_HIDE_THUMB, m_check_hide_thumb);
+	DDX_Control(pDX, IDC_CHECK_DISABLE, m_check_disable);
+	DDX_Control(pDX, IDC_CHECK_FORCED_GRAY, m_check_forced_gray);
 }
 
 BEGIN_MESSAGE_MAP(CTestCSCSliderCtrlDlg, CDialogEx)
@@ -70,6 +73,10 @@ BEGIN_MESSAGE_MAP(CTestCSCSliderCtrlDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_WINDOWPOSCHANGED()
+	ON_BN_CLICKED(IDC_CHECK_HIDE_THUMB, &CTestCSCSliderCtrlDlg::OnBnClickedCheckHideThumb)
+	ON_BN_CLICKED(IDC_CHECK_DISABLE, &CTestCSCSliderCtrlDlg::OnBnClickedCheckDisable)
+	ON_REGISTERED_MESSAGE(Message_CSCSliderCtrl, &CTestCSCSliderCtrlDlg::on_message_CSCSliderCtrl)
+	ON_BN_CLICKED(IDC_CHECK_FORCED_GRAY, &CTestCSCSliderCtrlDlg::OnBnClickedCheckForcedGray)
 END_MESSAGE_MAP()
 
 
@@ -116,14 +123,15 @@ BOOL CTestCSCSliderCtrlDlg::OnInitDialog()
 
 
 	m_slider.set_range(50, 100);
+	m_slider.SetPos(75);
 	m_slider.set_style(CSCSliderCtrl::style_thumb_round);
-	m_slider.set_tic_freq(5, true);
+	m_slider.set_tic_freq(10, true);
 	//m_slider.set_track_height(3);
-	m_slider.set_text_style(CSCSliderCtrl::text_style_none);
+	m_slider.set_text_style(CSCSliderCtrl::text_style_percentage);
 	m_slider.set_font_size(6);
 	m_slider.set_color_theme(CSCColorTheme::color_theme_linkmemine);
-	//m_slider.set_thumb_color(RGB(209, 209, 209));
-	//m_slider.set_text_color(GRAY(128));
+	m_slider.set_thumb_color(gRGB(64, 73, 88));
+	m_slider.set_text_color(gRGB(64, 73, 88));
 	//m_slider.set_back_color(RGB(64, 73, 88));
 	//m_slider.set_track_color(RGB(103, 117, 139), RGB(41, 47, 55));
 	//m_slider.set_track_height(5);
@@ -198,4 +206,26 @@ void CTestCSCSliderCtrlDlg::OnWindowPosChanged(WINDOWPOS* lpwndpos)
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 	SaveWindowPosition(&theApp, this);
+}
+
+void CTestCSCSliderCtrlDlg::OnBnClickedCheckHideThumb()
+{
+	m_slider.hide_thumb(m_check_hide_thumb.GetCheck() == BST_CHECKED);
+}
+
+void CTestCSCSliderCtrlDlg::OnBnClickedCheckDisable()
+{
+	m_slider.EnableWindow(m_check_disable.GetCheck() != BST_CHECKED);
+}
+
+LRESULT CTestCSCSliderCtrlDlg::on_message_CSCSliderCtrl(WPARAM wParam, LPARAM lParam)
+{
+	m_check_hide_thumb.SetCheck(BST_UNCHECKED);
+	m_slider.hide_thumb(false);
+	return 0;
+}
+
+void CTestCSCSliderCtrlDlg::OnBnClickedCheckForcedGray()
+{
+	m_slider.set_forced_gray(m_check_forced_gray.GetCheck() == BST_CHECKED);
 }
